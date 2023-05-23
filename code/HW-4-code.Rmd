@@ -60,7 +60,7 @@ fish_model
 ```
 
 4.)
-```{r}
+```{r, check-assump}
 #first create a 2 by 2 grid and then visually check your assumptions
 par(mfrow = c(2, 2))
 plot(fish_model)
@@ -69,8 +69,34 @@ plot(fish_model)
 5.)
 Residuals vs Fitted: This plot shows the constant variance of residuals, and appears to be randomly distributed about the red line and is fairly homoscedastic.
 Normal Q-Q: This plot displays how normally distributed the residuals are. Based on the majority of the points following a linear trend this does appear to be normally distributed.
-Scale Location: 
-```{r}
+Scale Location: This plot also demonstrates that the square root of residuals are randomly placed around the red line and appear to be homoscedastic. 
+Cooks Distance: This plot demonstrates that there is only a single out liar in the data set, however, since this is only a single point I do not think it will significantly influence the linear model.
+
+```{r, turn-off}
+#turning off the 2 by 2 grid
 dev.off()
+```
+
+6.)
+```{r, summary}
+#creating a summary and naming that object
+model_summary <- summary(fish_model)
+
+```
+
+7.)
+```{r, table}
+#creating anova table, first by naming object
+model_squares <- anova(fish_model)
+
+#now making sure to add easy to read names and tidying up labels
+model_squares_table <- tidy(model_squares) %>% 
+  mutate(p.value = case_when(
+    p.value < 0.001 ~ "< 0.001"
+  )) %>% 
+  flextable() %>% 
+  set_header_labels(df = "Degrees of Freedom", sumsq = "Sum of Squares", meansq = "Mean Squares", statistic = "F-statistic", p.value = "p-value")
+model_squares_table
+
 ```
 

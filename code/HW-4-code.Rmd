@@ -9,12 +9,68 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Problem #1
 
-```{r}
-#here is code to test
+1.) 
+Null Hypothesis: Fish length does not predict fish weight in trout perch.
+H0: beta sub one = 0
+Alternative Hypothesis: Fish length does predict fish weight in trout perch.
+Ha: beta sub one does not = 0
+
+2.) 
+```{r, loading-libraries}
+library(tidyverse)
+library(here)
+library(lterdatasampler)
+library(performance)
+library(broom)
+library(flextable)
+library(ggeffects)
+library(car)
+library(naniar)
 ```
 
- 
+```{r, load-data}
+#read in data set
+fish <- read.csv(here("data", "ntl6_v12.csv"))
+```
 
+```{r, filter-data}
+#only focus in on the species trout perch
+fish_data <- fish %>% 
+  filter(spname == "TROUTPERCH")
+
+```
+
+b.)
+```{r, visualize-missing-data}
+#now visualzing missing data
+gg_miss_var(fish_data) +
+  #adding a caption
+  labs(caption = "The above figure illustrates that there are 200 missing values for trout perch weight which will influence the sample size of our data.")
+```
+ 
+3.)
+```{r, linear-model-fish}
+#creating a linear model between predictor and response variables using the filtered data set
+fish_model <- lm(weight ~ length, data = fish_data)
+
+fish_model
+
+```
+
+4.)
+```{r}
+#first create a 2 by 2 grid and then visually check your assumptions
+par(mfrow = c(2, 2))
+plot(fish_model)
+```
+
+5.)
+Residuals vs Fitted: This plot shows the constant variance of residuals, and appears to be randomly distributed about the red line and is fairly homoscedastic.
+Normal Q-Q: This plot displays how normally distributed the residuals are. Based on the majority of the points following a linear trend this does appear to be normally distributed.
+Scale Location: 
+```{r}
+dev.off()
+```
 

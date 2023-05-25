@@ -2,11 +2,13 @@
 title: "HW-4"
 author: "Jesse Grigolite"
 date: "2023-05-23"
-output: html_document
+output:
+  pdf_document: default
+  pdf: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 The repository is linked here:

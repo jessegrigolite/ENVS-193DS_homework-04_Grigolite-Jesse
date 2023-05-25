@@ -81,7 +81,7 @@ dev.off()
 ```{r, summary}
 #creating a summary and naming that object
 model_summary <- summary(fish_model)
-
+model_summary
 ```
 
 7.)
@@ -97,6 +97,37 @@ model_squares_table <- tidy(model_squares) %>%
   flextable() %>% 
   set_header_labels(df = "Degrees of Freedom", sumsq = "Sum of Squares", meansq = "Mean Squares", statistic = "F-statistic", p.value = "p-value")
 model_squares_table
+
+```
+
+8.) The ANOVA table relates to the previous results of the "summary()" function by providing data on how well the predictor variable, in this case length, predicts the response variable, in this case weight, and illustrates this by providing an F-statistic with a corresponding p-value. Similarly, the "summary()" function provides data on the model's estimated coefficients (i.e. slope and intercept) and gives a t statistic to show whether they are significant predictors within the model. 
+
+9.) We hypothesized that fish length would predict fish weight in trout perch, with our null stating that length would not predict weight. We analyzed 289 trout perch and found that length does significantly predict weight in a linear regression model via an F-test (F = 1, 280.8, DF = 288, R-squared = 0.82, alpha = 0.05,p = < 0.001). For each gram increase in trout perch weight, we expect a 0.2 (SE +/- 0/006) millimeter increase in trout perch length.
+
+10.)
+```{r, plot-model-prediction}
+#creating an object for predictions
+predictions <- ggpredict(fish_model, terms = "length")
+
+#naming the object and first plotting the observations of length and weight in a point plot
+plot_predictions <- ggplot(data = fish_data, 
+                           aes(x = length, y = weight)) +
+  geom_point() +
+  # then plot the predictions with the linear regression line
+  geom_line(data = predictions, 
+            aes(x = x, y = predicted), 
+            color = "red", linewidth = 1) +
+  # then plot the 95% confidence interval from ggpredict which will be displayed with the thicker band
+  geom_ribbon(data = predictions, 
+              aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), 
+              alpha = 0.2) +
+  # designating theme and meaningful labels
+  theme_bw() +
+  labs(x = "Trout Perch Length (mm)",
+       y = "Trout Perch Weight (g)",
+       title = "Predicted Relationship of Trout Perch Length to Weight Over Recorded Observations")
+
+plot_predictions
 
 ```
 

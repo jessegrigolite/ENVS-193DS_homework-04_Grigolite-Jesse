@@ -121,7 +121,7 @@ plot_predictions <- ggplot(data = fish_data,
   geom_ribbon(data = predictions, 
               aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), 
               alpha = 0.2) +
-  # designating theme and meaningful labels
+  # designating theme and meaningful labels and title
   theme_bw() +
   labs(x = "Trout Perch Length (mm)",
        y = "Trout Perch Weight (g)",
